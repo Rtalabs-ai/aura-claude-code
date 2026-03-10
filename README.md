@@ -35,6 +35,8 @@ Actions: `write`, `list`, `usage`, `query`
 - **`/episodic`** — Session transcripts, conversation history (auto-archived)
 - **`/fact`** — Verified facts, user preferences (persistent)
 
+> **Memory OS v2.1** (`auralith-aura>=0.2.2`): Enhanced with temporal decay scoring, noise filtering, deduplication, bloom filters, SimHash fuzzy matching, and tiered priority scoring — zero RAM overhead.
+
 ## Quick Setup
 
 1. Install Aura Core: `pip install auralith-aura`
@@ -52,6 +54,16 @@ Claude: 🔥 Compiling ./docs → knowledge.aura
 You: /aura-query knowledge.aura "how does authentication work?"
 Claude: Based on auth_module.py and architecture.md:
         The authentication system uses JWT tokens...
+```
+
+## Data Provenance & Trust
+
+Every memory entry stores `source` (agent/user/system), `namespace`, `timestamp`, `session_id`, and a unique `entry_id`. Nothing is inferred or synthesized — memory contains only what was explicitly written. No hidden embeddings, no derived data.
+
+```python
+memory.show_usage()                              # Inspect what's stored per tier
+memory.prune_shards(before_date="2026-01-01")    # Prune by date
+# Or delete ~/.aura/memory/ to wipe everything
 ```
 
 ## Security & Privacy
